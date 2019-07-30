@@ -16,10 +16,12 @@ $IDSK $TARGET -n
 # Convert to MSDOS CR+LF LINE FORMAT
 # This needs unix2dos util 
 # brew install unix2dos
+unix2dos $SOURCE
 unix2dos $DESTINATION
 unix2dos $PRESENTATION_FILE
 
 # ADD TO DSK
+$IDSK $TARGET -i $SOURCE -t 0
 $IDSK $TARGET -i $DESTINATION -t 0
 $IDSK $TARGET -i $PRESENTATION_FILE -t 0
 
