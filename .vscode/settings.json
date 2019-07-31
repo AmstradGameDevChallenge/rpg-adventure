@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "cpctelera.h": "c",
+        "present.h": "c",
+        "util.h": "c"
+    }
+}
