@@ -9,7 +9,28 @@
 #include <cpctelera.h>
 #include <stdio.h>
 
+#include "present.h"
+#include "util.h"
+
+void game_loop();
+
 void main(void) {
+   // Let's start!
+   show_presentation();
+
+   printf("\r\n");
+   printf("PRESS ENTER TO START\r\n");
+   
+   // Is enter pressed?
+   wait_for_enter_key();
+
+   game_loop();
+
+   // Loop forever
+   while (1);
+}
+
+void game_loop() {
    // Init variables
    u8 energy    = 100;
    u8 attack    = 30;
@@ -17,32 +38,18 @@ void main(void) {
    u8 energyen  = 90;
    u8 attacken  = 20;
    u8 defenseen = 10;
-   
-   // Let's start!
-   printf("RPG GAME\r\n");
-   printf("\r\n");
-   printf("PRESS ENTER TO START\r\n");
-   
-   // Is enter pressed?
-   while (!cpct_isKeyPressed(Key_Return)) {
-      cpct_scanKeyboard();
-   }
 
    while (1) {
 
-      // CLS
-      putchar(12);
+      FIRM_CLS;
       
       // Print stats
       printf("PLAYER [%d] (a%d) (d%d)\r\n", energy,   attack,   defense);
       printf("ENEMY  [%d] (a%d) (d%d)\r\n", energyen, attacken, defenseen);
       
-      // Re scan keyboard
-      cpct_scanKeyboard();
-      
-      while (!cpct_isKeyPressed(Key_A) && !cpct_isKeyPressed(Key_D)) {
+      do {
          cpct_scanKeyboard();
-      }
+      } while (!cpct_isKeyPressed(Key_A) && !cpct_isKeyPressed(Key_D));
          
       // PLAYER ATTACKS!
       if (cpct_isKeyPressed(Key_A)) {
@@ -61,7 +68,4 @@ void main(void) {
          energy -= attacken;
       }
    }
-
-   // Loop forever
-   while (1);
 }
