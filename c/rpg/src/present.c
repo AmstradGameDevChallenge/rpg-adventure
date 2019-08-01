@@ -1,5 +1,6 @@
 #include "present.h"
 #include "util.h"
+#include "i18n_strings.h"
 
 void show_presentation() {
    // int c;
@@ -25,4 +26,10 @@ void show_presentation() {
     puts("RPG GAME by dfreniche\r\n");
 
     repeat_print("_", 10);
+
+    printf("\r\n");
+    printf(i18n_PRESS_ENTER_START);
+    
+    // Is enter pressed?
+    wait_for_enter_key();
 }
