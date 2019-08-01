@@ -28,6 +28,7 @@ void cls() {
 }
 
 // locate: moves cursor to x,y location on screen
+// x starts in 1, y starts in 1
 // using FIRMWARE
 void locate(u8 x, u8 y) {
     // we check for absurd x, y values
