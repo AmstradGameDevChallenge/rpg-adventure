@@ -4,6 +4,9 @@ IDSK=$CPCT_PATH/tools/iDSK-0.13/bin/iDSK
 TARGET=rpg.dsk
 PRESENTATION_FILE=src/present.txt
 
+# Close any open RVM2 instance
+./close-rvw.sh
+
 # Make will create DSK with the binary
 make
 
