@@ -1,11 +1,9 @@
-
-
-/**
- * Small Text Based Rogue like RPG text-based game for the AMSTRAD CPC
- * by @dfreniche
- * July 2019
- * v0.0.3
- **/
+//-----------------------------------------------------------------------------
+// Small Text Based Rogue like RPG text-based game for the AMSTRAD CPC
+// by @dfreniche
+// July 2019
+// v0.0.3
+//-----------------------------------------------------------------------------
 
 #include <cpctelera.h>
 #include <stdio.h>
