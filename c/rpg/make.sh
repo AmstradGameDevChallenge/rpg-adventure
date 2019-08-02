@@ -20,6 +20,8 @@ fi
 # ADD TO DSK
 $IDSK $TARGET -i $PRESENTATION_FILE -t 0
 
+echo "Success 🎉, let's launch RVM 🚀"
+
 # LAUNCH RVM
 cpct_rvm $TARGET
 
