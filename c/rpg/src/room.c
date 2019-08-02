@@ -2,7 +2,12 @@
 #include <stdio.h>
 #include "util.h"
 
-#define WALL_CHAR 127
+void clear_room_position(Room *r, u8 x, u8 y) {
+    printf("%d %d", x, y);
+    if (x >= 0 && x < ROOM_X_MAX && y >= 0 && y < ROOM_Y_MAX) {
+        r->room[x][y] = EMPTY_ROOM_TILE;
+    }
+}
 
 void move_character_in_room(Character *c, Room *r) {
    r->room[c->x_pos][c->y_pos] = c->sprite;
@@ -12,7 +17,7 @@ void generate_room_layout(Room *room, Weapon *weapons) {
 
    for (int i=0; i< ROOM_X_MAX; i++) {
       for (int j=0; j< ROOM_Y_MAX; j++) {
-         room->room[i][j] = '.';
+         room->room[i][j] = EMPTY_ROOM_TILE;
       }
    }
 
