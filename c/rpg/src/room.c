@@ -25,13 +25,13 @@ void update_room_tile(char sprite, Room *room, u8 x, u8 y) {
 
 void generate_room_layout(Room *room, Weapon *weapons) {
 
-   for (int i=0; i< ROOM_X_MAX; i++) {
+   for (int i=0; i < ROOM_X_MAX; i++) {
       for (int j=0; j< ROOM_Y_MAX; j++) {
          room->room[i][j] = EMPTY_ROOM_TILE;
       }
    }
 
-   // top a bottom walls
+   // add top and bottom walls
    for (int i=0; i < ROOM_X_MAX; i++) {
       room->room[0][i] = WALL_CHAR;
       room->room[ROOM_X_MAX-1][i] = WALL_CHAR;
@@ -50,7 +50,7 @@ void print_room(Room *room) {
    for (int i=0; i < ROOM_X_MAX; i++) {
       for (int j=0; j < ROOM_Y_MAX; j++) {
          
-         locate(room->padding_x + i + 1, room->padding_y + j + 1);
+         locate(room->padding_x + i, room->padding_y + j);
          putchar(room->room[i][j]);
       }
    }
