@@ -30,7 +30,8 @@ typedef struct game_room {
 } Room;
 
 void clear_room_position(Room *r, u8 x, u8 y);
-void move_character_in_room(Character *c, Room *r);
+void move_character_in_room(Character *character, Room *room, u8 new_x, u8 new_y);
+void put_character_in_room(Character *c, Room *r);
 void update_room_tile(char sprite, Room *room, u8 x, u8 y);
 void generate_room_layout(Room *room, Weapon *weapons);
 void print_room(Room *room);

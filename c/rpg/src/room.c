@@ -11,11 +11,28 @@ void clear_room_position(Room *r, u8 x, u8 y) {
     }
 }
 
-void move_character_in_room(Character *c, Room *room) {
+void move_character_in_room(Character *character, Room *room, u8 new_x, u8 new_y) {
+   // check x and y limits
+   if (new_x < 0 || new_x >= ROOM_X_MAX) {
+      return;
+   }
+
+   if (new_y < 0 || new_y >= ROOM_Y_MAX) {
+      return;
+   }
+
+   // we can't walk on walls
+   if (room->room[new_x][new_y] == WALL_CHAR) {
+      return;
+   }
+
+   character->x_pos = new_x;
+   character->y_pos = new_y;
+}
+
+void put_character_in_room(Character *c, Room *room) {
    room->room[c->x_pos][c->y_pos] = c->sprite;
    update_room_tile(c->sprite, room, c->x_pos, c->y_pos);
-   // locate(room->padding_x + c->x_pos, room->padding_y + c->y_pos);
-   // putchar(c->sprite);
 }
 
 void update_room_tile(char sprite, Room *room, u8 x, u8 y) {

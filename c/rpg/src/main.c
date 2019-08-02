@@ -117,7 +117,7 @@ void game_loop() {
    cls();
    print_room(&main_room);
    while (!game_ends) {      
-      move_character_in_room(&player, &main_room);
+      put_character_in_room(&player, &main_room);
 
       // Print stats
       locate(1,20);
@@ -131,16 +131,16 @@ void game_loop() {
       switch (action)
       {
       case MOVE_UP:
-         player.y_pos = player.y_pos - 1;
+         move_character_in_room(&player, &main_room, player.x_pos, player.y_pos - 1);
          break;
       case MOVE_DOWN:
-         player.y_pos = player.y_pos + 1;
+         move_character_in_room(&player, &main_room, player.x_pos, player.y_pos + 1);
          break;
       case MOVE_LEFT:
-         player.x_pos = player.x_pos - 1;
+         move_character_in_room(&player, &main_room, player.x_pos - 1, player.y_pos);
          break;
       case MOVE_RIGHT:
-         player.x_pos = player.x_pos + 1;
+         move_character_in_room(&player, &main_room, player.x_pos + 1, player.y_pos);
          break;
       case ATTACK:
          break; 
