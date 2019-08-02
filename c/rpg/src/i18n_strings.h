@@ -7,6 +7,6 @@
 #define i18n_FISTS "Fists"
 #define i18n_STICK "Stick"
 #define i18n_SWORD "Sword"
-
+#define i18n_YOU_ARE_IN "You are now in "
 #endif
 

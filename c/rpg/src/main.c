@@ -21,45 +21,48 @@
 // Actions
 
 typedef enum {
-   MOVE_LEFT, 
-   MOVE_RIGHT, 
-   MOVE_UP, 
-   MOVE_DOWN, 
-   ATTACK, 
-   DEFEND, 
-   PICK_WEAPON, 
-   SELECT_WEAPON, 
-   DO_NOTHING
+   NONE = 0,
+   MOVE_LEFT  = 1, 
+   MOVE_RIGHT = 2, 
+   MOVE_UP    = 3, 
+   MOVE_DOWN  = 4, 
+   ATTACK     = 5, 
+   DEFEND     = 6, 
+   PICK_WEAPON= 7, 
+   SELECT_WEAPON = 8, 
+   DO_NOTHING = 9
 } Game_actions;
 
-Game_actions game_actions[9] = {
-   MOVE_LEFT, 
-   MOVE_RIGHT, 
-   MOVE_UP, 
-   MOVE_DOWN, 
-   ATTACK, 
-   DEFEND, 
-   PICK_WEAPON, 
-   SELECT_WEAPON, 
-   DO_NOTHING
-};
+#define GAME_ACTIONS 9
+
+Game_actions read_keyboard(enum cpct_e_keyID game_action_keys[], Game_actions game_actions[]);
+void game_loop();
 
 // Keys for each action
 // OPQA forever, don't accept anything else
-u8 game_action_keys[9] = {
+const enum cpct_e_keyID game_action_keys[GAME_ACTIONS] = {
    Key_O, 
    Key_P, 
    Key_Q, 
    Key_A, 
-   Key_A, 
+   Key_Enter, 
    Key_D, 
    Key_I, 
    Key_W, 
    Key_Space
 };
 
-
-void game_loop();
+const Game_actions game_actions[GAME_ACTIONS] = {
+   MOVE_LEFT, 
+   MOVE_RIGHT, 
+   MOVE_UP, 
+   MOVE_DOWN, 
+   ATTACK, 
+   DEFEND, 
+   PICK_WEAPON, 
+   SELECT_WEAPON, 
+   DO_NOTHING
+};
 
 
 void main(void) {
@@ -78,9 +81,9 @@ void main(void) {
 
 // Main game loop
 void game_loop() {
+   // Init variables
    u8 game_ends = 0;
 
-   // Init variables
    u8 energy    = 100;
    u8 attack    = 30;
    u8 defense   = 15;
@@ -97,53 +100,98 @@ void game_loop() {
    Character player;
    Character monster;
 
+   Game_actions action = NONE;
+
+   // setup room
    Room main_room;
-   strcpy(main_room.name, "Room");
+   strcpy(main_room.name, "Main Hall");
    generate_room_layout(&main_room, weapons);
+   main_room.padding_x = 3;
+   main_room.padding_y = 3;
 
    initialize_game_character(&player, 100, 10, 10, 248, "Diego");
+   player.x_pos = 7;
+   player.y_pos = 7;
 
-   while (!game_ends) {
-
-      cls();
-      player.x_pos = 7;
-      player.y_pos = 7;
+   // Game loop starts
+   cls();
+   print_room(&main_room);
+   while (!game_ends) {      
       move_character_in_room(&player, &main_room);
-      print_room(&main_room, 3, 3);
 
       // Print stats
       locate(1,20);
-      putchar(PLAYER_SPRITE); printf("PLAYER [%d] (a%d) (d%d)\r\n", energy,   attack,   defense);
+      putchar(PLAYER_SPRITE); printf("PLAYER [%d] (a%d) (d%d)\r\n   ", energy,   attack,   defense);
       locate(1,21);
-      putchar(ENEMY_SPRITE);  printf("ENEMY  [%d] (a%d) (d%d)\r\n", energyen, attacken, defenseen);
+      putchar(ENEMY_SPRITE);  printf("ENEMY  [%d] (a%d) (d%d)\r\n   ", energyen, attacken, defenseen);
       
-      do {
-         cpct_scanKeyboard();
-      } while (!cpct_isKeyPressed(Key_A) && !cpct_isKeyPressed(Key_D));
+      action = read_keyboard(game_action_keys, game_actions);
+      clear_room_position(&main_room, player.x_pos, player.y_pos);
+
+      switch (action)
+      {
+      case MOVE_UP:
+         player.y_pos = player.y_pos - 1;
+         break;
+      case MOVE_DOWN:
+         player.y_pos = player.y_pos + 1;
+         break;
+      case MOVE_LEFT:
+         player.x_pos = player.x_pos - 1;
+         break;
+      case MOVE_RIGHT:
+         player.x_pos = player.x_pos + 1;
+         break;
+      case ATTACK:
+         break; 
+      case DEFEND:
+         break;
+      case PICK_WEAPON:
+         break; 
+      case SELECT_WEAPON:
+         break; 
+      default:
+         break;
+      }
+
+      // do {
+      //    cpct_scanKeyboard();
+      // } while (!cpct_isKeyPressed(Key_A) && !cpct_isKeyPressed(Key_D));
          
-      // PLAYER ATTACKS!
-      if (cpct_isKeyPressed(Key_A)) {
-         energyen -= attack;
-      } else {
-         // PLAYER DEFENDS!
-         if (cpct_isKeyPressed(Key_D)) {
-            energy += defense;
-         }
-      }
+      // // PLAYER ATTACKS!
+      // if (cpct_isKeyPressed(Key_A)) {
+      //    energyen -= attack;
+      // } else {
+      //    // PLAYER DEFENDS!
+      //    if (cpct_isKeyPressed(Key_D)) {
+      //       energy += defense;
+      //    }
+      // }
       
-      // ENEMY DECIDE
-      if (cpct_rand() < 64) {
-         energyen += defenseen;
-      } else {
-         energy -= attacken;
-      }
+      // // ENEMY DECIDE
+      // if (cpct_rand() < 64) {
+      //    energyen += defenseen;
+      // } else {
+      //    energy -= attacken;
+      // }
 
       // check if game should end
    }
 }
 
-// void create_weapon(struct character_weapon *w, char *name, char sprite, u8 damage) {
-//    strcpy(w->name, name);
-//    w->sprite = sprite;
-//    w->damage = damage;
-// }
+Game_actions read_keyboard(enum cpct_e_keyID game_action_keys[], Game_actions game_actions[]) {
+   Game_actions action_found = NONE;
+
+   do {
+         for (int i=0; i<GAME_ACTIONS; i++) {
+            cpct_scanKeyboard();
+            if (cpct_isKeyPressed(game_action_keys[i])) {
+               action_found = game_actions[i];
+               break;
+            }
+         }
+   } while (action_found == NONE);
+
+   printf("Action %d    ", action_found);
+   return action_found;
+}
