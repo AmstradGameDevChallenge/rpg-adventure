@@ -11,6 +11,22 @@ void clear_room_position(Room *r, u8 x, u8 y) {
     }
 }
 
+void move_character_up(Character *character, Room *room) {
+   move_character_in_room(character, room, character->x_pos, character->y_pos - 1);
+}
+
+void move_character_down(Character *character, Room *room) {
+   move_character_in_room(character, room, character->x_pos, character->y_pos + 1);
+}
+
+void move_character_right(Character *character, Room *room) {
+   move_character_in_room(character, room, character->x_pos + 1, character->y_pos);
+}
+
+void move_character_left(Character *character, Room *room) {
+   move_character_in_room(character, room, character->x_pos - 1, character->y_pos);
+}
+
 void move_character_in_room(Character *character, Room *room, u8 new_x, u8 new_y) {
    // check x and y limits
    if (new_x < 0 || new_x >= ROOM_X_MAX) {
