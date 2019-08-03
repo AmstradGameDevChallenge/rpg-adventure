@@ -51,3 +51,7 @@ No, BASIC is not compiled. But you still need to put the `.bas` file in a disc i
 You need to have CPCTelera already set up in order to compile.
 
 Once done. run `c/rpg/make.sh`
+
+## Interesting docs found along the way
+
+- [Disassembly of Locomotive BASIC v1.1](http://www.cpctech.org.uk/docs/basic.asm)
