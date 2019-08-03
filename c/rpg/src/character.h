@@ -15,7 +15,7 @@
 typedef struct game_character {
    u16 health_points;   // life of our player and enemies. When == 0, it dies
    u8 current_weapon;   // current weapon selected
-   Weapon weapons[3];   // a character can carry up to three weapons
+   Weapon *weapons[3];   // a character can carry up to three weapons
    u16 attack;          // attack strengh modifier 
    u16 defense;         // defense modifier
    char sprite;         // text sprite that represents our character
@@ -24,7 +24,7 @@ typedef struct game_character {
    u8 y_pos;
 } Character;
 
-void initialize_game_character (Character *c,
+void initialize_game_character(Character *c,
    u16 health_points,   
    u16 attack,           
    u16 defense,         
