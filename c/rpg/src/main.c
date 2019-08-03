@@ -49,7 +49,7 @@ const enum cpct_e_keyID game_action_keys[GAME_ACTIONS] = {
    Key_P, 
    Key_Q, 
    Key_A, 
-   Key_Enter, 
+   Key_Return, 
    Key_D, 
    Key_W,
    Key_1, 
