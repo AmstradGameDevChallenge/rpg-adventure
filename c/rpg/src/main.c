@@ -2,8 +2,9 @@
 // Small Text Based Rogue like RPG text-based game for the AMSTRAD CPC
 // by @dfreniche
 // July 2019
-// v0.0.4
 //-----------------------------------------------------------------------------
+
+#define VERSION "v0.0.5"
 
 #include <cpctelera.h>
 #include <stdio.h>
@@ -127,6 +128,8 @@ void game_loop() {
    locate(1,23);
    puts("Move (O/P/Q/A) - Select Weapon (1/2/3)\r");
    puts("Attack (Enter) - Defend (D)");
+
+   locate(35,25); puts(VERSION);
    show_header();
 
    while (!game_ends) {      

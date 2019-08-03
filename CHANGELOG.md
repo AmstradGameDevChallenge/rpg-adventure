@@ -11,6 +11,19 @@ Again worked just on the C version. The BASIC version is still at `v0.0.1`
 
 ## C Changes
 
+- attack and defense works!
+- end of game properly detected
+
+![C Version v0.0.5 screenshot](img/c-v0.0.5.png)
+
+
+v0.0.4 (3/8/2019)
+=================
+
+Again worked just on the C version. The BASIC version is still at `v0.0.1`
+
+## C Changes
+
 - prettier overal presentation
 - added CHANGELOG and LICENSE files
 - weapon selection now possible
