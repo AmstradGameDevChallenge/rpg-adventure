@@ -4,6 +4,20 @@ Disc Downloads (latest version)
 - 💾 C     - [Download](basic/c/rpg/rpg.dsk) 
 - 💾 BASIC - [Download](basic/rpg.dsk) 
 
+v0.0.4 (3/8/2019)
+=================
+
+Again worked just on the C version. The BASIC version is still at `v0.0.1`
+
+## C Changes
+
+- prettier overal presentation
+- added CHANGELOG and LICENSE files
+- weapon selection now possible
+
+![C Version v0.0.4 screenshot](img/c-v0.0.4.png)
+
+
 v0.0.3 (2/8/2019)
 =================
 
