@@ -97,3 +97,7 @@ void repeat_print_char(char c, u8 times) {
         putchar(c);
     }
 }
+
+u8 generate_random_number(u8 limit) {
+    return (cpct_rand() % limit) + 1;
+}

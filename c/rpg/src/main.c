@@ -116,12 +116,8 @@ void game_loop() {
    main_room.padding_y = 5;
 
    initialize_game_character(&player, 100, 10, 10, 248, "Diego");
-   player.x_pos = 7;
-   player.y_pos = 7;
    
    initialize_game_character(&monster, 100, 10, 10, 225, "Monster");
-   monster.x_pos = 5;
-   monster.y_pos = 2;
 
    // Game loop starts
    cls();
