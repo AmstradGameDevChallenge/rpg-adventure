@@ -72,12 +72,6 @@ const Game_actions game_actions[GAME_ACTIONS] = {
    DO_NOTHING
 };
 
-const Weapon weapons[3] = {
-   {i18n_FISTS, 253, 5},
-   {i18n_STICK, 254, 10},
-   {i18n_SWORD, 252, 15}
-};
-
 #define NUM_RELEVANT_CHARACTERS 2
 
 void main(void) {
@@ -117,14 +111,14 @@ void game_loop() {
    // setup room
    Room main_room;
    strcpy(main_room.name, "Main Hall");
-   generate_room_layout(&main_room, weapons);
+   generate_room_layout(&main_room, world_weapons);
    main_room.padding_x = 3;
    main_room.padding_y = 3;
 
    initialize_game_character(&player, 100, 10, 10, 248, "Diego");
    player.x_pos = 7;
    player.y_pos = 7;
-
+   
    initialize_game_character(&monster, 100, 10, 10, 225, "Monster");
    monster.x_pos = 5;
    monster.y_pos = 2;
@@ -145,7 +139,9 @@ void game_loop() {
       putchar(PLAYER_SPRITE); printf("PLAYER [%3d] (a%d) (d%d)\r\n   ", energy,   attack,   defense);
       locate(1,21);
       putchar(ENEMY_SPRITE);  printf("ENEMY  [%3d] (a%d) (d%d)\r\n   ", energyen, attacken, defenseen);
-      
+      locate(1,22);
+      printf("Current weapon: %s", player.weapons[player.current_weapon]->name);
+
       action = read_keyboard(game_action_keys, game_actions);
       clear_room_position(&main_room, player.x_pos, player.y_pos);
 
@@ -170,10 +166,13 @@ void game_loop() {
       case PICK_WEAPON:
          break; 
       case SELECT_1_WEAPON:
+         player.current_weapon = 0;
          break; 
       case SELECT_2_WEAPON:
+         player.current_weapon = 1;
          break; 
       case SELECT_3_WEAPON:
+         player.current_weapon = 2;
          break; 
       default:
          break;
