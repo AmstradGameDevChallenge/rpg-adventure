@@ -15,9 +15,15 @@ void redefine_character_sprites() {
 }
 
 
-/****************************************************************************
- *                      Character Initialization
- ***************************************************************************/
+// initialize_game_character: initializes a game character (player, enemies, etc.)
+// Args:
+//    Character *c: pointer to the character to be initialized
+//    u16 health_points: health points for this character. When zero, it dies   
+//    u16 attack: attack points           
+//    u16 defense: defense points         
+//    char sprite: graphical representation         
+//    char *name: name of this character       
+// All characters start with three weapons   
 void initialize_game_character (Character *c,
    u16 health_points,   
    u16 attack,           
@@ -26,13 +32,15 @@ void initialize_game_character (Character *c,
    char *name       
    ) {
    c->health_points = health_points;
-   // struct character_weapon fists;
-   // create_weapon(&fists, i18n_FISTS, 70, 5);
-   c->current_weapon = 0;
-   // memcpy(c->weapons, weapons[0], sizeof(Weapon));
    
    c->attack = attack;
    c->defense = defense;
    c->sprite = sprite;
    strcpy(c->name, name);
+
+   // adding three weapons to this character
+   c->current_weapon = 0;
+   for (int i=0; i<MAX_WEAPONS; i++) {
+      c->weapons[i] = &(world_weapons[i]);
+   }
 }

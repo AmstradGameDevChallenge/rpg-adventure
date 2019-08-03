@@ -3,6 +3,7 @@
         "cpctelera.h": "c",
         "present.h": "c",
         "util.h": "c",
-        "i18n_strings.h": "c"
+        "i18n_strings.h": "c",
+        "stdio.h": "c"
     }
 }

@@ -33,3 +33,25 @@ void show_presentation() {
     // Is enter pressed?
     wait_for_enter_key();
 }
+
+void show_header() {
+    char line[41];
+
+    for (int i=0; i<40; i++) {
+        line[i] = 233;
+    }
+    line[40] = 0;
+
+    for (int i=1; i<4; i++) {
+        locate(1,i);
+        puts(line);
+    }
+
+    locate(12, 2);
+    pen(2);
+    puts(" R P G  G A M E ");
+    pen(1);
+    // for (int i=1; i<4; i++) {
+    //     cpct_drawStringM1("========================================", cpct_getScreenPtr(CPCT_VMEM_START, 0, i));
+    // }
+}
