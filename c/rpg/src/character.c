@@ -1,5 +1,6 @@
 #include "character.h"
 #include "util.h"
+#include "room.h"
 #include <string.h>
 
 void redefine_character_sprites() {
@@ -43,4 +44,7 @@ void initialize_game_character (Character *c,
    for (int i=0; i<MAX_WEAPONS; i++) {
       c->weapons[i] = &(world_weapons[i]);
    }
+
+   c->x_pos = generate_random_number(ROOM_X_MAX-2);
+   c->y_pos = generate_random_number(ROOM_Y_MAX-2);
 }

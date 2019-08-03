@@ -41,4 +41,6 @@ void repeat_print(char *s, u8 times);
 // repeat_print_char: prints character times times :-)
 void repeat_print_char(char c, u8 times);
 
+u8 generate_random_number(u8 limit);
+
 #endif

@@ -2,8 +2,9 @@
 // Small Text Based Rogue like RPG text-based game for the AMSTRAD CPC
 // by @dfreniche
 // July 2019
-// v0.0.4
 //-----------------------------------------------------------------------------
+
+#define VERSION "v0.0.5"
 
 #include <cpctelera.h>
 #include <stdio.h>
@@ -39,7 +40,7 @@ typedef enum {
 
 Game_actions read_keyboard(enum cpct_e_keyID game_action_keys[], Game_actions game_actions[]);
 void game_loop();
-u8 should_game_end(Character characters[], u8 num_relevant_chars);
+u8 should_game_end(Character *characters[], u8 num_relevant_chars);
 
 
 // Keys for each action
@@ -82,10 +83,15 @@ void main(void) {
    // Let's start!
    // show_presentation();
 
-   game_loop();
-
    // Loop forever
-   while (1);
+   while (1){
+      game_loop();
+      cls();
+      wait_for_enter_key();
+      show_presentation();
+      wait_for_enter_key();
+   }
+
 }
 
 // Main game loop
@@ -93,21 +99,18 @@ void game_loop() {
    // Init variables
    u8 game_ends = 0;
 
-   u8 energy    = 100;
-   u8 attack    = 30;
-   u8 defense   = 15;
-   u8 energyen  = 90;
-   u8 attacken  = 20;
-   u8 defenseen = 10;
-
    Character player;
    Character monster;
    Game_actions monster_move;
-
    Game_actions action = NONE;
 
-   Character *relevant_characters = malloc(sizeof(Character) * NUM_RELEVANT_CHARACTERS);
-      
+   Weapon *w;
+
+   // Character *relevant_characters[NUM_RELEVANT_CHARACTERS] = malloc(sizeof(Character) * NUM_RELEVANT_CHARACTERS);
+   Character *relevant_characters[NUM_RELEVANT_CHARACTERS] = {
+      {&player},
+      {&monster}
+   };
    // setup room
    Room main_room;
    strcpy(main_room.name, "Main Hall");
@@ -116,12 +119,8 @@ void game_loop() {
    main_room.padding_y = 5;
 
    initialize_game_character(&player, 100, 10, 10, 248, "Diego");
-   player.x_pos = 7;
-   player.y_pos = 7;
    
    initialize_game_character(&monster, 100, 10, 10, 225, "Monster");
-   monster.x_pos = 5;
-   monster.y_pos = 2;
 
    // Game loop starts
    cls();
@@ -129,6 +128,8 @@ void game_loop() {
    locate(1,23);
    puts("Move (O/P/Q/A) - Select Weapon (1/2/3)\r");
    puts("Attack (Enter) - Defend (D)");
+
+   locate(35,25); puts(VERSION);
    show_header();
 
    while (!game_ends) {      
@@ -146,7 +147,8 @@ void game_loop() {
       locate(30,8); printf("(a%d) (d%d)\r\n   ", monster.attack, monster.defense);
       locate(1,21);
       pen(1);
-      printf("Current weapon: %s", player.weapons[player.current_weapon]->name);
+      printf("Current weapon: %s - damage: %d", player.weapons[player.current_weapon]->name,
+         player.weapons[player.current_weapon]->damage);
 
 
       action = read_keyboard(game_action_keys, game_actions);
@@ -167,8 +169,12 @@ void game_loop() {
          move_character_right(&player, &main_room);
          break;
       case ATTACK:
+         w = player.weapons[player.current_weapon];
+         monster.health_points = monster.health_points - (player.attack * w->damage);
+         // printf("%d", player.attack * w->damage);
          break; 
       case DEFEND:
+         player.health_points = player.health_points + player.defense;
          break;
       case PICK_WEAPON:
          break; 
@@ -200,16 +206,6 @@ void game_loop() {
       } else if (monster_move == MOVE_LEFT) {
          move_character_left(&monster, &main_room);
       }
-
-      // // PLAYER ATTACKS!
-      // if (cpct_isKeyPressed(Key_A)) {
-      //    energyen -= attack;
-      // } else {
-      //    // PLAYER DEFENDS!
-      //    if (cpct_isKeyPressed(Key_D)) {
-      //       energy += defense;
-      //    }
-      // }
       
       // // ENEMY DECIDE
       // if (cpct_rand() < 64) {
@@ -241,9 +237,11 @@ Game_actions read_keyboard(enum cpct_e_keyID game_action_keys[], Game_actions ga
 
 // game ends when all characters in this array (normally the player or a final boss)
 // have died
-u8 should_game_end(Character characters[], u8 num_relevant_chars) {
+u8 should_game_end(Character *characters[], u8 num_relevant_chars) {
+   int h = 0;
    for (int i = 0; i < num_relevant_chars; i++) {
-      if (characters[i].health_points <= 0) {
+      h = characters[i]->health_points;
+      if (h <= 0) {
          return 1;
       }
    }
