@@ -112,8 +112,8 @@ void game_loop() {
    Room main_room;
    strcpy(main_room.name, "Main Hall");
    generate_room_layout(&main_room, world_weapons);
-   main_room.padding_x = 3;
-   main_room.padding_y = 3;
+   main_room.padding_x = 15;
+   main_room.padding_y = 5;
 
    initialize_game_character(&player, 100, 10, 10, 248, "Diego");
    player.x_pos = 7;
@@ -127,20 +127,27 @@ void game_loop() {
    cls();
    print_room(&main_room);
    locate(1,23);
-   puts("Move (O/P/Q/A) - the ONLY way to move\r");
+   puts("Move (O/P/Q/A) - Select Weapon (1/2/3)\r");
    puts("Attack (Enter) - Defend (D)");
+   show_header();
 
    while (!game_ends) {      
       put_character_in_room(&player, &main_room);
       put_character_in_room(&monster, &main_room);
 
       // Print stats
-      locate(1,20);
-      putchar(PLAYER_SPRITE); printf("PLAYER [%3d] (a%d) (d%d)\r\n   ", energy,   attack,   defense);
+      pen(1);
+      locate(1,6); putchar(PLAYER_SPRITE); printf(" PLAYER");
+      locate(1,7); printf("%c %3d", 228, player.health_points);
+      locate(1,8); printf("(a%d) (d%d)\r\n   ", player.attack, player.defense);
+      pen(3);
+      locate(34,6); putchar(ENEMY_SPRITE);  printf(" ENEMY");
+      locate(36,7); printf("%c %3d", 228, monster.health_points);
+      locate(30,8); printf("(a%d) (d%d)\r\n   ", monster.attack, monster.defense);
       locate(1,21);
-      putchar(ENEMY_SPRITE);  printf("ENEMY  [%3d] (a%d) (d%d)\r\n   ", energyen, attacken, defenseen);
-      locate(1,22);
+      pen(1);
       printf("Current weapon: %s", player.weapons[player.current_weapon]->name);
+
 
       action = read_keyboard(game_action_keys, game_actions);
       clear_room_position(&main_room, player.x_pos, player.y_pos);
@@ -229,7 +236,6 @@ Game_actions read_keyboard(enum cpct_e_keyID game_action_keys[], Game_actions ga
          }
    } while (action_found == NONE);
 
-   printf("Action %d    ", action_found);
    return action_found;
 }
 
