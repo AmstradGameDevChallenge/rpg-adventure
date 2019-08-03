@@ -22,7 +22,7 @@ Yep, grab latest disc images here:
 - [ ] add back start screen to the C game
 - [ ] add fight phase only when close to the monster
 - [ ] weapon picking
-- [ ] weapon selection
+- [x] weapon selection
 - [ ] add more rooms, and doors to connect rooms
 - [ ] add some sound effects
 - [ ] add some music. Don't know how and don't have any music. Help welcome!
