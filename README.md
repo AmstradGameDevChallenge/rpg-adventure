@@ -16,13 +16,15 @@ Yep, grab latest disc images here:
 - 💾 BASIC - [Download](basic/rpg.dsk) 
 
 
-## TO-DO list
+## TO-DO list (ordered by priority)
 
 - [ ] feature parity C/BASIC. Will focus on C development and then try to emulate the same in BASIC.
 - [ ] add back start screen to the C game
 - [ ] add fight phase only when close to the monster
 - [ ] weapon picking
 - [x] weapon selection
+- [ ] killing monsters gives xp points
+- [ ] add XP levels
 - [ ] add more rooms, and doors to connect rooms
 - [ ] add some sound effects
 - [ ] add some music. Don't know how and don't have any music. Help welcome!
@@ -55,3 +57,10 @@ Once done. run `c/rpg/make.sh`
 ## Interesting docs found along the way
 
 - [Disassembly of Locomotive BASIC v1.1](http://www.cpctech.org.uk/docs/basic.asm)
+- 
+
+## Utilities
+
+- In `util` I've created a spreadsheet to design AMSTRAD CPC characters. It works perfectly in iPad and Mac. It's exported to Excel format, not working as nice as the other version. If anyone comes up with an improved version, please share. I design sprites in my iPad 😉
+
+![Spreadsheet showin the Sprite Designer](img/sprite-designer.png)
