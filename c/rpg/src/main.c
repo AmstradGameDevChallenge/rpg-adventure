@@ -129,7 +129,7 @@ void game_loop() {
    puts("Move (O/P/Q/A) - Select Weapon (1/2/3)\r");
    puts("Attack (Enter) - Defend (D)");
 
-   locate(35,25); puts(VERSION);
+   locate(35,25); printf(VERSION);
    show_header();
 
    while (!game_ends) {      
