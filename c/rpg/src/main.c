@@ -41,7 +41,7 @@ typedef enum {
 Game_actions read_keyboard(enum cpct_e_keyID game_action_keys[], Game_actions game_actions[]);
 void game_loop();
 u8 should_game_end(Character *characters[], u8 num_relevant_chars);
-
+Game_actions monster_moves_in_room(Character *monster, Room *main_room);
 
 // Keys for each action
 // OPQA forever, don't accept anything else
@@ -171,7 +171,6 @@ void game_loop() {
       case ATTACK:
          w = player.weapons[player.current_weapon];
          monster.health_points = monster.health_points - (player.attack * w->damage);
-         // printf("%d", player.attack * w->damage);
          break; 
       case DEFEND:
          player.health_points = player.health_points + player.defense;
@@ -191,21 +190,12 @@ void game_loop() {
          break;
       }
 
+      // Before moving the enemy checks to see if the player is nearby. 
+      // In that case it attacks
+
       // ENEMY MOVES
 
-      monster_move = (cpct_rand() % 4) + 1;
-
-      clear_room_position(&main_room, monster.x_pos, monster.y_pos);
-
-      if (monster_move == MOVE_UP) {
-         move_character_up(&monster, &main_room);
-      } else if (monster_move == MOVE_DOWN) {
-         move_character_down(&monster, &main_room);
-      } else if (monster_move == MOVE_RIGHT) {
-         move_character_right(&monster, &main_room);
-      } else if (monster_move == MOVE_LEFT) {
-         move_character_left(&monster, &main_room);
-      }
+      monster_move = monster_moves_in_room(&monster, &main_room);
       
       // // ENEMY DECIDE
       // if (cpct_rand() < 64) {
@@ -246,4 +236,23 @@ u8 should_game_end(Character *characters[], u8 num_relevant_chars) {
       }
    }
    return 0;
+}
+
+
+Game_actions monster_moves_in_room(Character *monster, Room *main_room) {
+   Game_actions monster_move = (cpct_rand() % 4) + 1;
+
+   clear_room_position(main_room, monster->x_pos, monster->y_pos);
+
+   if (monster_move == MOVE_UP) {
+      move_character_up(monster, main_room);
+   } else if (monster_move == MOVE_DOWN) {
+      move_character_down(monster, main_room);
+   } else if (monster_move == MOVE_RIGHT) {
+      move_character_right(monster, main_room);
+   } else if (monster_move == MOVE_LEFT) {
+      move_character_left(monster, main_room);
+   }
+
+   return monster_move;
 }
