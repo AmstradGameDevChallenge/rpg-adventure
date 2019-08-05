@@ -42,6 +42,7 @@ Game_actions read_keyboard(enum cpct_e_keyID game_action_keys[], Game_actions ga
 void game_loop();
 u8 should_game_end(Character *characters[], u8 num_relevant_chars);
 Game_actions monster_moves_in_room(Character *monster, Room *main_room);
+void character_attacks_character(Character *c1, Character *c2);
 
 // Keys for each action
 // OPQA forever, don't accept anything else
@@ -168,8 +169,7 @@ void game_loop() {
          move_character_right(&player, &main_room);
          break;
       case ATTACK:
-         w = player.weapons[player.current_weapon];
-         monster.health_points = monster.health_points - (player.attack * w->damage);
+         character_attacks_character(&player, &monster);
          break; 
       case DEFEND:
          player.health_points = player.health_points + player.defense;
@@ -192,8 +192,7 @@ void game_loop() {
       // Before moving the enemy checks to see if the player is nearby. 
       // In that case it attacks
       if (character_next_to_character_in_room(&player, &monster, &main_room) == 1) {
-         w = monster.weapons[monster.current_weapon];
-         player.health_points = player.health_points - (monster.attack * w->damage);
+         character_attacks_character(&monster, &player);
          monster_attack_effect();
       } else {
          // ENEMY MOVES
@@ -260,4 +259,11 @@ Game_actions monster_moves_in_room(Character *monster, Room *main_room) {
    }
 
    return monster_move;
+}
+
+void character_attacks_character(Character *c1, Character *c2) {
+   Weapon *w = c1->weapons[c1->current_weapon];
+   u8 damage = c1->attack * w->damage;
+   c2->health_points = c2->health_points - damage;
+   locate(1,19); printf("%s attacks dealing %d damage!", c1->name, damage);
 }
