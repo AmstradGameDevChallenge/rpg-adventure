@@ -5,5 +5,6 @@
 
 void show_presentation(char *version);
 void show_header();
+void monster_attack_effect();
 
 #endif

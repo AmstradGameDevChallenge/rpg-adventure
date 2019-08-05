@@ -1,6 +1,7 @@
 #include "room.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "util.h"
 #include "i18n_strings.h"
 
@@ -91,4 +92,24 @@ void print_room(Room *room) {
 
    locate(room->padding_x - strlen(i18n_YOU_ARE_IN)/2, room->padding_y + ROOM_Y_MAX + 2);
    printf("%s%s", i18n_YOU_ARE_IN, room->name);
+}
+
+u8 character_next_to_character_in_room(Character *c1, Character *c2, Room *room) {
+   // in the same row
+   if (c1->y_pos == c2->y_pos) {
+      // distance of one 
+      if (abs(c1->x_pos - c2->x_pos) == 1) {
+         return 1;
+      } 
+   }
+
+   // in the same column
+   if (c1->x_pos == c2->x_pos) {
+      // distance of one 
+      if (abs(c1->y_pos - c2->y_pos) == 1) {
+         return 1;
+      } 
+   }
+
+   return 0;
 }

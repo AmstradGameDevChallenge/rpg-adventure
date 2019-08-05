@@ -191,10 +191,16 @@ void game_loop() {
 
       // Before moving the enemy checks to see if the player is nearby. 
       // In that case it attacks
+      if (character_next_to_character_in_room(&player, &monster, &main_room) == 1) {
+         w = monster.weapons[monster.current_weapon];
+         player.health_points = player.health_points - (monster.attack * w->damage);
+         monster_attack_effect();
+      } else {
+         // ENEMY MOVES
 
-      // ENEMY MOVES
-
-      monster_move = monster_moves_in_room(&monster, &main_room);
+         monster_move = monster_moves_in_room(&monster, &main_room);
+         border(1, 1);
+      }
       
       // // ENEMY DECIDE
       // if (cpct_rand() < 64) {

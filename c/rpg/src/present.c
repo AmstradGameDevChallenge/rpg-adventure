@@ -58,3 +58,7 @@ void show_header() {
     //     cpct_drawStringM1("========================================", cpct_getScreenPtr(CPCT_VMEM_START, 0, i));
     // }
 }
+
+void monster_attack_effect() {
+    border(3, 6);
+}
