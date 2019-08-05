@@ -4,7 +4,7 @@
 // July 2019
 //-----------------------------------------------------------------------------
 
-#define VERSION "v0.0.5"
+#define VERSION "v0.0.6"
 
 #include <cpctelera.h>
 #include <stdio.h>
@@ -41,7 +41,9 @@ typedef enum {
 Game_actions read_keyboard(enum cpct_e_keyID game_action_keys[], Game_actions game_actions[]);
 void game_loop();
 u8 should_game_end(Character *characters[], u8 num_relevant_chars);
-
+Game_actions monster_moves_in_room(Character *monster, Room *main_room);
+void character_attacks_character(Character *c1, Character *c2);
+void print_console(char *s);
 
 // Keys for each action
 // OPQA forever, don't accept anything else
@@ -79,16 +81,17 @@ void main(void) {
    redefine_character_sprites();
 
    cpct_setVideoMode(1);  // Set Video Mode 1 (40x25)
+   border(1,1);
 
    // Let's start!
-   // show_presentation();
+   show_presentation(VERSION);
 
    // Loop forever
    while (1){
       game_loop();
       cls();
       wait_for_enter_key();
-      show_presentation();
+      show_presentation(VERSION);
       wait_for_enter_key();
    }
 
@@ -103,8 +106,6 @@ void game_loop() {
    Character monster;
    Game_actions monster_move;
    Game_actions action = NONE;
-
-   Weapon *w;
 
    // Character *relevant_characters[NUM_RELEVANT_CHARACTERS] = malloc(sizeof(Character) * NUM_RELEVANT_CHARACTERS);
    Character *relevant_characters[NUM_RELEVANT_CHARACTERS] = {
@@ -125,11 +126,10 @@ void game_loop() {
    // Game loop starts
    cls();
    print_room(&main_room);
-   locate(1,23);
+   locate(1,24);
    puts("Move (O/P/Q/A) - Select Weapon (1/2/3)\r");
-   puts("Attack (Enter) - Defend (D)");
+   printf("Attack (Enter) - Defend (D) - Wait (Spc)");
 
-   locate(35,25); puts(VERSION);
    show_header();
 
    while (!game_ends) {      
@@ -145,11 +145,11 @@ void game_loop() {
       locate(34,6); putchar(ENEMY_SPRITE);  printf(" ENEMY");
       locate(36,7); printf("%c %3d", 228, monster.health_points);
       locate(30,8); printf("(a%d) (d%d)\r\n   ", monster.attack, monster.defense);
-      locate(1,21);
+      locate(1,10);
       pen(1);
-      printf("Current weapon: %s - damage: %d", player.weapons[player.current_weapon]->name,
-         player.weapons[player.current_weapon]->damage);
-
+      puts("Weapon:");
+      locate(1,11); printf("%s", player.weapons[player.current_weapon]->name);
+      locate(1,13); printf("damage: %d", player.weapons[player.current_weapon]->damage);
 
       action = read_keyboard(game_action_keys, game_actions);
       clear_room_position(&main_room, player.x_pos, player.y_pos);
@@ -169,9 +169,7 @@ void game_loop() {
          move_character_right(&player, &main_room);
          break;
       case ATTACK:
-         w = player.weapons[player.current_weapon];
-         monster.health_points = monster.health_points - (player.attack * w->damage);
-         // printf("%d", player.attack * w->damage);
+         character_attacks_character(&player, &monster);
          break; 
       case DEFEND:
          player.health_points = player.health_points + player.defense;
@@ -191,20 +189,17 @@ void game_loop() {
          break;
       }
 
-      // ENEMY MOVES
+      // Before moving the enemy checks to see if the player is nearby. 
+      // In that case it attacks
+      if (character_next_to_character_in_room(&player, &monster, &main_room) == 1) {
+         pen(3);
+         character_attacks_character(&monster, &player);
+         monster_attack_effect();
+      } else {
+         // ENEMY MOVES
 
-      monster_move = (cpct_rand() % 4) + 1;
-
-      clear_room_position(&main_room, monster.x_pos, monster.y_pos);
-
-      if (monster_move == MOVE_UP) {
-         move_character_up(&monster, &main_room);
-      } else if (monster_move == MOVE_DOWN) {
-         move_character_down(&monster, &main_room);
-      } else if (monster_move == MOVE_RIGHT) {
-         move_character_right(&monster, &main_room);
-      } else if (monster_move == MOVE_LEFT) {
-         move_character_left(&monster, &main_room);
+         monster_move = monster_moves_in_room(&monster, &main_room);
+         border(1, 1);
       }
       
       // // ENEMY DECIDE
@@ -246,4 +241,51 @@ u8 should_game_end(Character *characters[], u8 num_relevant_chars) {
       }
    }
    return 0;
+}
+
+
+Game_actions monster_moves_in_room(Character *monster, Room *main_room) {
+   Game_actions monster_move = (cpct_rand() % 4) + 1;
+
+   clear_room_position(main_room, monster->x_pos, monster->y_pos);
+
+   if (monster_move == MOVE_UP) {
+      move_character_up(monster, main_room);
+   } else if (monster_move == MOVE_DOWN) {
+      move_character_down(monster, main_room);
+   } else if (monster_move == MOVE_RIGHT) {
+      move_character_right(monster, main_room);
+   } else if (monster_move == MOVE_LEFT) {
+      move_character_left(monster, main_room);
+   }
+
+   return monster_move;
+}
+
+void character_attacks_character(Character *c1, Character *c2) {
+   char msg[40];
+   Weapon *w = c1->weapons[c1->current_weapon];
+   u8 damage = c1->attack * w->damage;
+   c2->health_points = c2->health_points - damage;
+   sprintf(msg, "%s attacks dealing %d damage!    ", c1->name, damage);
+   print_console(msg);
+}
+
+#define CONSOLE_Y_START 18
+#define CONSOLE_Y_STOP 22
+
+void print_console(char *s) {
+   static u8 y = CONSOLE_Y_START;
+
+   if (y==0) y=CONSOLE_Y_START;
+   locate(1, y);
+   printf(s);
+   y++;
+   if (y > CONSOLE_Y_STOP) {
+      y = CONSOLE_Y_START;
+      for (int i=CONSOLE_Y_START; i<=CONSOLE_Y_STOP; i++) {
+         locate(1, i);
+         printf("                                       ");
+      }
+   }
 }

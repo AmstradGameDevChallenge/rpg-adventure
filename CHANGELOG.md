@@ -4,7 +4,14 @@ Disc Downloads (latest version)
 - 💾 C     - [Download](basic/c/rpg/rpg.dsk) 
 - 💾 BASIC - [Download](basic/rpg.dsk) 
 
-v0.0.4 (3/8/2019)
+v0.0.6 (5/8/2019)
+=================
+
+- better overall presentation
+- added monster attacks
+- added console (WIP)
+
+v0.0.5 (3/8/2019)
 =================
 
 Again worked just on the C version. The BASIC version is still at `v0.0.1`

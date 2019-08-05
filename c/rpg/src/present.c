@@ -2,7 +2,7 @@
 #include "util.h"
 #include "i18n_strings.h"
 
-void show_presentation() {
+void show_presentation(char *version) {
    // int c;
    // FILE *file;
    // file = fopen("present.txt", "r");
@@ -22,14 +22,17 @@ void show_presentation() {
     "888  T88b  888        Y88b  d88P\r\n" 
     "888   T88b 888         Y8888P88 \r\n"; 
 
+    pen(2);
     puts(s);
-    puts("RPG GAME by dfreniche\r\n");
-
+    pen(1);
     repeat_print("_", 10);
+    puts(" RPG GAME by dfreniche\r\n");
 
     printf("\r\n");
     printf(i18n_PRESS_ENTER_START);
     
+    pen(2); locate(35,24); puts(version); pen(1);
+
     // Is enter pressed?
     wait_for_enter_key();
 }
@@ -54,4 +57,8 @@ void show_header() {
     // for (int i=1; i<4; i++) {
     //     cpct_drawStringM1("========================================", cpct_getScreenPtr(CPCT_VMEM_START, 0, i));
     // }
+}
+
+void monster_attack_effect() {
+    border(3, 6);
 }

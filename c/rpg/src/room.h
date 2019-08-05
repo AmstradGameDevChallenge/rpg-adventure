@@ -39,5 +39,6 @@ void put_character_in_room(Character *c, Room *r);
 void update_room_tile(char sprite, Room *room, u8 x, u8 y);
 void generate_room_layout(Room *room, Weapon *weapons);
 void print_room(Room *room);
+u8 character_next_to_character_in_room(Character *c1, Character *c2, Room *room);
 
 #endif
