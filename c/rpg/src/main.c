@@ -81,14 +81,14 @@ void main(void) {
    cpct_setVideoMode(1);  // Set Video Mode 1 (40x25)
 
    // Let's start!
-   // show_presentation();
+   show_presentation(VERSION);
 
    // Loop forever
    while (1){
       game_loop();
       cls();
       wait_for_enter_key();
-      show_presentation();
+      show_presentation(VERSION);
       wait_for_enter_key();
    }
 
@@ -129,7 +129,6 @@ void game_loop() {
    puts("Move (O/P/Q/A) - Select Weapon (1/2/3)\r");
    puts("Attack (Enter) - Defend (D)");
 
-   locate(35,25); printf(VERSION);
    show_header();
 
    while (!game_ends) {      
