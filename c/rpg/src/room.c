@@ -90,7 +90,7 @@ void print_room(Room *room) {
       }
    }
 
-   locate(room->padding_x - strlen(i18n_YOU_ARE_IN)/2, room->padding_y + ROOM_Y_MAX + 2);
+   locate(room->padding_x - strlen(i18n_YOU_ARE_IN)/2, room->padding_y + ROOM_Y_MAX + 1);
    printf("%s%s", i18n_YOU_ARE_IN, room->name);
 }
 

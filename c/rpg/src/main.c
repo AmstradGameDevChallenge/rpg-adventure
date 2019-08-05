@@ -43,6 +43,7 @@ void game_loop();
 u8 should_game_end(Character *characters[], u8 num_relevant_chars);
 Game_actions monster_moves_in_room(Character *monster, Room *main_room);
 void character_attacks_character(Character *c1, Character *c2);
+void print_console(char *s);
 
 // Keys for each action
 // OPQA forever, don't accept anything else
@@ -80,6 +81,7 @@ void main(void) {
    redefine_character_sprites();
 
    cpct_setVideoMode(1);  // Set Video Mode 1 (40x25)
+   border(1,1);
 
    // Let's start!
    show_presentation(VERSION);
@@ -104,8 +106,6 @@ void game_loop() {
    Character monster;
    Game_actions monster_move;
    Game_actions action = NONE;
-
-   Weapon *w;
 
    // Character *relevant_characters[NUM_RELEVANT_CHARACTERS] = malloc(sizeof(Character) * NUM_RELEVANT_CHARACTERS);
    Character *relevant_characters[NUM_RELEVANT_CHARACTERS] = {
@@ -192,6 +192,7 @@ void game_loop() {
       // Before moving the enemy checks to see if the player is nearby. 
       // In that case it attacks
       if (character_next_to_character_in_room(&player, &monster, &main_room) == 1) {
+         pen(3);
          character_attacks_character(&monster, &player);
          monster_attack_effect();
       } else {
@@ -262,8 +263,29 @@ Game_actions monster_moves_in_room(Character *monster, Room *main_room) {
 }
 
 void character_attacks_character(Character *c1, Character *c2) {
+   char msg[40];
    Weapon *w = c1->weapons[c1->current_weapon];
    u8 damage = c1->attack * w->damage;
    c2->health_points = c2->health_points - damage;
-   locate(1,19); printf("%s attacks dealing %d damage!", c1->name, damage);
+   sprintf(msg, "%s attacks dealing %d damage!    ", c1->name, damage);
+   print_console(msg);
+}
+
+#define CONSOLE_Y_START 18
+#define CONSOLE_Y_STOP 22
+
+void print_console(char *s) {
+   static u8 y = CONSOLE_Y_START;
+
+   if (y==0) y=CONSOLE_Y_START;
+   locate(1, y);
+   printf(s);
+   y++;
+   if (y > CONSOLE_Y_STOP) {
+      y = CONSOLE_Y_START;
+      for (int i=CONSOLE_Y_START; i<=CONSOLE_Y_STOP; i++) {
+         locate(1, i);
+         printf("                                       ");
+      }
+   }
 }
