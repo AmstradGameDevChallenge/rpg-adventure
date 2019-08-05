@@ -127,7 +127,7 @@ void game_loop() {
    print_room(&main_room);
    locate(1,23);
    puts("Move (O/P/Q/A) - Select Weapon (1/2/3)\r");
-   puts("Attack (Enter) - Defend (D)");
+   puts("Attack (Enter) - Defend (D) - Wait (Spc)");
 
    show_header();
 
