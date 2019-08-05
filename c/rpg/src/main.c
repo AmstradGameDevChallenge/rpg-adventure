@@ -4,7 +4,7 @@
 // July 2019
 //-----------------------------------------------------------------------------
 
-#define VERSION "v0.0.5"
+#define VERSION "v0.0.6"
 
 #include <cpctelera.h>
 #include <stdio.h>
