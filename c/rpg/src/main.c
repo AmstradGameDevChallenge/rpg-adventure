@@ -126,9 +126,9 @@ void game_loop() {
    // Game loop starts
    cls();
    print_room(&main_room);
-   locate(1,23);
+   locate(1,24);
    puts("Move (O/P/Q/A) - Select Weapon (1/2/3)\r");
-   puts("Attack (Enter) - Defend (D) - Wait (Spc)");
+   printf("Attack (Enter) - Defend (D) - Wait (Spc)");
 
    show_header();
 
@@ -145,11 +145,11 @@ void game_loop() {
       locate(34,6); putchar(ENEMY_SPRITE);  printf(" ENEMY");
       locate(36,7); printf("%c %3d", 228, monster.health_points);
       locate(30,8); printf("(a%d) (d%d)\r\n   ", monster.attack, monster.defense);
-      locate(1,21);
+      locate(1,10);
       pen(1);
-      printf("Current weapon: %s - damage: %d", player.weapons[player.current_weapon]->name,
-         player.weapons[player.current_weapon]->damage);
-
+      puts("Weapon:");
+      locate(1,11); printf("%s", player.weapons[player.current_weapon]->name);
+      locate(1,13); printf("damage: %d", player.weapons[player.current_weapon]->damage);
 
       action = read_keyboard(game_action_keys, game_actions);
       clear_room_position(&main_room, player.x_pos, player.y_pos);
