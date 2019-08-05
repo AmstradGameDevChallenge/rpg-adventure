@@ -1,6 +1,6 @@
 # RPG / Rogue like adventure game for the AMSTRAD CPC
 
-![C Version v0.0.3 screenshot](img/c-v0.0.5.png)
+![C Version v0.0.3 screenshot](img/rpg.gif)
 
 This is part of the [AmstradGameDevChallenge](https://github.com/AmstradGameDevChallenge). The idea is to develop the same game in BASIC and C.
 
